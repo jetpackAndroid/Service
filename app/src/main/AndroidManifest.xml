@@ -33,6 +33,13 @@
             android:enabled="true"
             android:exported="true" >
         </service>
+
+        <provider
+            android:name=".MyContentProvider"
+            android:authorities="sms.example.inbjavia.server_parse"
+            android:enabled="true"
+            android:exported="true" >
+        </provider>
     </application>
 
 </manifest>
