@@ -16,7 +16,7 @@ public class MySmsProvider extends ContentProvider {
     private static final int TODOS = 10;
     private static final int TODO_ID = 20;
 
-    private static final String AUTHORITY = "sms.example.inbjavia.server_parse";
+    private static final String AUTHORITY = "sms.example.inbjavia.server_parse.MySmsProvider";
 
     private static final String BASE_PATH = "mysms";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
@@ -33,20 +33,20 @@ public class MySmsProvider extends ContentProvider {
         sURIMatcher.addURI(AUTHORITY, BASE_PATH + "/#", TODO_ID);
     }
 
-    public MySmsProvider() {
-    }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         // Implement this to handle requests to delete one or more rows.
-        throw new UnsupportedOperationException("Not yet implemented");
+        //throw new UnsupportedOperationException("Not yet implemented");
+        return 0;
     }
 
     @Override
     public String getType(Uri uri) {
         // TODO: Implement this to handle requests for the MIME type of the data
         // at the given URI.
-        throw new UnsupportedOperationException("Not yet implemented");
+        //throw new UnsupportedOperationException("Not yet implemented");
+return  null;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class MySmsProvider extends ContentProvider {
         long id = 0;
 //    switch (uriType) {
 //        case TODOS:
-        id = sqlDB.insert("mysms", null, values);
+        id = sqlDB.insert(uri.toString(), null, values);
 //            break;
 //        default:
 //            throw new IllegalArgumentException("Unknown URI: " + uri);
@@ -68,20 +68,22 @@ public class MySmsProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         database = new MySQLiteHelper(getContext());
-        return false;
+        return true;
     }
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         // TODO: Implement this to handle query requests from clients.
-        throw new UnsupportedOperationException("Not yet implemented");
+//        throw new UnsupportedOperationException("Not yet implemented");
+        return null;
     }
 
     @Override
     public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
         // TODO: Implement this to handle requests to update one or more rows.
-        throw new UnsupportedOperationException("Not yet implemented");
+//        throw new UnsupportedOperationException("Not yet implemented");
+        return 0;
     }
 }

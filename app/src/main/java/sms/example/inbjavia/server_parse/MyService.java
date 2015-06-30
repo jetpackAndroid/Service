@@ -1,9 +1,9 @@
 package sms.example.inbjavia.server_parse;
 
 import android.app.Service;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -16,11 +16,10 @@ public class MyService extends Service {
         Log.d("My_Service", "FirstService started");
         super.onCreate();
         try {
-            MySmsProvider mySmsProvider = new MySmsProvider();
+           ContentResolver contentResolver = getContentResolver();
             ContentValues contentValues = new ContentValues();
             contentValues.put("m_id", "bhavik");
-            Uri uri = Uri.parse("content://mysms");
-            mySmsProvider.insert(uri, contentValues);
+            contentResolver.insert(MySmsProvider.CONTENT_URI, contentValues);
         }
         catch(Exception e){
             Log.d("My_Service","Exception is "+ e.getMessage());
@@ -34,7 +33,6 @@ public class MyService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
+        return null;
     }
 }
