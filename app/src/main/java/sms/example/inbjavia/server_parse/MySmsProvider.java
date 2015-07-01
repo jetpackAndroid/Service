@@ -7,20 +7,28 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 
 public class MySmsProvider extends ContentProvider {
 
     private MySQLiteHelper database;
 
     // used for the UriMacher
-    private static final int TODOS = 10;
+    private static final int SMS_ID = 10;
+    private static final int LOGS_ID = 30;
     private static final int TODO_ID = 20;
 
     private static final String AUTHORITY = "sms.example.inbjavia.server_parse.MySmsProvider";
 
-    private static final String BASE_PATH = "mysms";
+    private static final String BASE_PATH_SMS = "mysms";
+    private static final String BASE_PATH_CALL_LOGS = "mCallLogs";
+
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
-            + "/" + BASE_PATH);
+            + "/" + BASE_PATH_SMS);
+
+    public static final Uri CONTENT_URI_CALL_LOGS = Uri.parse("content://" + AUTHORITY
+            + "/" + BASE_PATH_CALL_LOGS);
+
 
     public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
             + "/mysms";
@@ -29,18 +37,18 @@ public class MySmsProvider extends ContentProvider {
 
     private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static {
-        sURIMatcher.addURI(AUTHORITY, BASE_PATH, TODOS);
-        sURIMatcher.addURI(AUTHORITY, BASE_PATH + "/#", TODO_ID);
+        sURIMatcher.addURI(AUTHORITY, BASE_PATH_SMS, SMS_ID);
+        sURIMatcher.addURI(AUTHORITY, BASE_PATH_SMS + "/#", SMS_ID);
+
+        sURIMatcher.addURI(AUTHORITY, BASE_PATH_CALL_LOGS, LOGS_ID);
+        sURIMatcher.addURI(AUTHORITY, BASE_PATH_CALL_LOGS + "/#", TODO_ID);
     }
-
-
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         // Implement this to handle requests to delete one or more rows.
         //throw new UnsupportedOperationException("Not yet implemented");
         return 0;
     }
-
     @Override
     public String getType(Uri uri) {
         // TODO: Implement this to handle requests for the MIME type of the data
@@ -51,18 +59,27 @@ return  null;
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
+        int uriType = sURIMatcher.match(uri);
         SQLiteDatabase sqlDB = database.getWritableDatabase();
+
         int rowsDeleted = 0;
         long id = 0;
-//    switch (uriType) {
-//        case TODOS:
-        id = sqlDB.insert(uri.toString(), null, values);
-//            break;
-//        default:
-//            throw new IllegalArgumentException("Unknown URI: " + uri);
-//    }
+//        id = sqlDB.insert(uri.toString(), null, values);
+
+       switch (uriType) {
+        case SMS_ID:
+            Log.d("insert", "uri: " + uri.toString());
+            id = sqlDB.insert("mysms", null, values);
+            Log.d("insert", "id: " + id);
+            break;
+        case LOGS_ID:
+            id = sqlDB.insert("mCallLogs", null, values);
+            break;
+        default:
+            throw new IllegalArgumentException("Unknown URI: " + uri);
+        }
         getContext().getContentResolver().notifyChange(uri, null);
-        return Uri.parse(BASE_PATH + "/" + id);
+        return Uri.parse(BASE_PATH_SMS + "/" + id);
     }
 
     @Override

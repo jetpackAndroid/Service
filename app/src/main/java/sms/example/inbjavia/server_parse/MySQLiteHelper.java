@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.CallLog;
-import android.provider.VoicemailContract;
 import android.util.Log;
 
 /**
@@ -37,39 +35,39 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         createCallLogsTables(db);
     }
     private void createCallLogsTables(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + " mCallLogs (" +
-        CallLog.Calls._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-        CallLog.Calls.NUMBER + " TEXT," +
-        CallLog.Calls.NUMBER_PRESENTATION + " INTEGER NOT NULL DEFAULT " +
-        CallLog.Calls.PRESENTATION_ALLOWED + "," +
-        CallLog.Calls.DATE + " INTEGER," +
-        CallLog.Calls.DURATION + " INTEGER," +
-        CallLog.Calls.DATA_USAGE + " INTEGER," +
-        CallLog.Calls.TYPE + " INTEGER," +
-        CallLog.Calls.FEATURES + " INTEGER NOT NULL DEFAULT 0," +
-        CallLog.Calls.PHONE_ACCOUNT_COMPONENT_NAME + " TEXT," +
-        CallLog.Calls.PHONE_ACCOUNT_ID + " TEXT," +
-//        CallLog.Calls.SUB_ID + " INTEGER DEFAULT -1," +
-        CallLog.Calls.NEW + " INTEGER," +
-        CallLog.Calls.CACHED_NAME + " TEXT," +
-        CallLog.Calls.CACHED_NUMBER_TYPE + " INTEGER," +
-        CallLog.Calls.CACHED_NUMBER_LABEL + " TEXT," +
-        CallLog.Calls.COUNTRY_ISO + " TEXT," +
-        CallLog.Calls.VOICEMAIL_URI + " TEXT," +
-        CallLog.Calls.IS_READ + " INTEGER," +
-        CallLog.Calls.GEOCODED_LOCATION + " TEXT," +
-        CallLog.Calls.CACHED_LOOKUP_URI + " TEXT," +
-        CallLog.Calls.CACHED_MATCHED_NUMBER + " TEXT," +
-        CallLog.Calls.CACHED_NORMALIZED_NUMBER + " TEXT," +
-        CallLog.Calls.CACHED_PHOTO_ID + " INTEGER NOT NULL DEFAULT 0," +
-        CallLog.Calls.CACHED_FORMATTED_NUMBER + " TEXT," +
-//        VoicemailContract.Voicemails._DATA + " TEXT," +
-        VoicemailContract.Voicemails.HAS_CONTENT + " INTEGER," +
-        VoicemailContract.Voicemails.MIME_TYPE + " TEXT," +
-        VoicemailContract.Voicemails.SOURCE_DATA + " TEXT," +
-        VoicemailContract.Voicemails.SOURCE_PACKAGE + " TEXT," +
-        VoicemailContract.Voicemails.TRANSCRIPTION + " TEXT," +
-//        VoicemailContract.Voicemails.STATE + " INTEGER" +
+        db.execSQL("CREATE TABLE mCallLogs (" +
+        "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+        "number TEXT," +
+        "presentation INTEGER NOT NULL DEFAULT " +
+        "1 ," +
+        "date INTEGER," +
+        "duration INTEGER," +
+        "data_usage INTEGER," +
+        "type INTEGER," +
+        "features INTEGER NOT NULL DEFAULT 0," +
+        "subscription_component_name TEXT," +
+        "subscription_id TEXT," +
+        "sub_id INTEGER DEFAULT -1," +
+        "new INTEGER," +
+        "name TEXT," +
+        "numbertype INTEGER," +
+        "numberlabel TEXT," +
+        "countryiso TEXT," +
+        "voicemail_uri TEXT," +
+        "is_read INTEGER," +
+        "geocoded_location TEXT," +
+        "lookup_uri TEXT," +
+        "matched_number TEXT," +
+        "normalized_number TEXT," +
+        "photo_id INTEGER NOT NULL DEFAULT 0," +
+        "formatted_number TEXT," +
+        "_data TEXT," +
+        "has_content INTEGER," +
+        "mime_type TEXT," +
+        "source_data TEXT," +
+        "source_package TEXT," +
+        "transcription TEXT," +
+         "state INTEGER" +
         ");");
     }
 
