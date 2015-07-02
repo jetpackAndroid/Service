@@ -75,8 +75,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         // N.B.: Whenever the columns here are changed, the columns in
         // {@ref MmsSmsProvider} must be changed to match.
         db.execSQL("CREATE TABLE mysms (" +
-                "_id INTEGER PRIMARY KEY," +
-                "m_id TEXT," +   // STC FIELD ADDED
+                "_id INTEGER ," +
+                "m_id TEXT PRIMARY KEY," +   // STC FIELD ADDED
                 "thread_id INTEGER," +
                 "address TEXT," +
                 "person INTEGER," +
