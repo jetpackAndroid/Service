@@ -81,6 +81,7 @@ public class MySmsProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
+        System.out.println("");
         database = new MySQLiteHelper(getContext());
         return true;
     }

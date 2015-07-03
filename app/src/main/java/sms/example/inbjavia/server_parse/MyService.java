@@ -3,11 +3,8 @@ package sms.example.inbjavia.server_parse;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 
 public class MyService extends Service {
-
-
 
 
     public MyService() {
@@ -15,18 +12,17 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-        PickUpDataThread pickUpDataThread = new PickUpDataThread(getContentResolver());
+        PickUpDataThread pickUpDataThread = new PickUpDataThread(getContentResolver(), PickUpDataThread.UNLIMITED_THREAD);
         Thread thread = new Thread(pickUpDataThread);
         thread.start();
 
         return START_STICKY;
     }
 
-    @Override
-    public void onCreate() {
-        Log.d("My_Service", "FirstService started");
-        super.onCreate();
+//    @Override
+//    public void onCreate() {
+//        Log.d("My_Service", "FirstService started");
+//        super.onCreate();
 //        try {
 //
 //            ContentResolver contentResolver = getContentResolver();
@@ -40,7 +36,7 @@ public class MyService extends Service {
 //        catch(Exception e){
 //            Log.d("My_Service","Exception is "+ e.getMessage());
 //        }
-    }
+//    }
 
     @Override
     public void onDestroy() {
