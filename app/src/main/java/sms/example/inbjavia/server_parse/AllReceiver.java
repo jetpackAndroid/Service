@@ -8,7 +8,6 @@ import android.widget.Toast;
 
 public class AllReceiver extends BroadcastReceiver {
     public AllReceiver() {
-
     }
 
     @Override
@@ -22,6 +21,9 @@ public class AllReceiver extends BroadcastReceiver {
             Thread thread = new Thread(pickUpDataThread);
             thread.start();
             Toast.makeText(context,"Message Received",Toast.LENGTH_SHORT).show();
+        }
+        if(action == "android.net.conn.CONNECTIVITY_CHANGE"){
+            Toast.makeText(context,"Connectivity Changed",Toast.LENGTH_SHORT).show();
         }
     }
 }

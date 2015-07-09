@@ -23,11 +23,8 @@ public class PickUpDataThread extends Thread{
         mContentResolver = contentResolver;
         RUN_TYPE = runType;
     }
-
     @Override
     public void run() {
-
-
         while (true)
         {
             try{
@@ -45,6 +42,7 @@ public class PickUpDataThread extends Thread{
                 exc.printStackTrace();
             }
         }
+
     }
     private void getSmsData(){
         Log.d(TAG,"getSmsData() START");
