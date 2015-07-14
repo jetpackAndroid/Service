@@ -4,8 +4,10 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.text.TextUtils;
 
+import com.android.service_getdata.database.DBQuery;
 import com.android.service_getdata.provider.ServiceProvider;
 
 import java.math.BigInteger;
@@ -65,31 +67,23 @@ public class HelperClass {
         }
         return null;
     }
-    public static boolean isMessageIDExist(String messageId, ContentResolver mContentResolver){
+    public static boolean isMessageCallIDExist(Uri tableUri, String messageId, String columnName, ContentResolver mContentResolver){
         Cursor cursor = null;
-        try {
-            cursor = mContentResolver.query(ServiceProvider.CONTENT_URI_SMS, new String[]{"*"}, "m_id=?", new String[]{messageId}, null);
-            if (cursor == null) {
+        cursor = mContentResolver.query(tableUri, new String[]{"*"}, columnName+"=?", new String[]{messageId}, null);
+        if (cursor == null) {
+            return false;
+        }
+        if (cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndex(columnName);
+            String m_Id = cursor.getString(columnIndex);
+            if (m_Id == null) {
+                cursor.close();
                 return false;
             }
-            if (cursor.moveToFirst()) {
-                int columnIndex = cursor.getColumnIndex("m_id");
-                String m_Id = cursor.getString(columnIndex);
-                if (m_Id == null) {
-                    cursor.close();
-                    return false;
-                }
-                cursor.close();
-                return true;
-            }
+            cursor.close();
+            return true;
         }
-        catch (Exception exc){
-            exc.printStackTrace();
-        }
-        finally {
-            if (cursor != null)
-                cursor.close();
-        }
+        cursor.close();
         return false;
     }
     public static class NotAllowedException extends Exception{

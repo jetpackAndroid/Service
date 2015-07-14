@@ -39,8 +39,8 @@ public class ServiceProvider extends ContentProvider {
         sURIMatcher.addURI(AUTHORITY, BASE_PATH_SMS + "/#", SMS_ID);
         sURIMatcher.addURI(AUTHORITY, BASE_PATH_CALL_LOGS, CALLLOGS_ID);
         sURIMatcher.addURI(AUTHORITY, BASE_PATH_CALL_LOGS + "/#", CALLLOGS_ID);
-        sURIMatcher.addURI(AUTHORITY, BASE_PATH_CALL_LOGS, CONTACT_ID);
-        sURIMatcher.addURI(AUTHORITY, BASE_PATH_CALL_LOGS + "/#", CONTACT_ID);
+        sURIMatcher.addURI(AUTHORITY, BASE_PATH_CONTACT, CONTACT_ID);
+        sURIMatcher.addURI(AUTHORITY, BASE_PATH_CONTACT + "/#", CONTACT_ID);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class ServiceProvider extends ContentProvider {
                     returnUri = Uri.parse(BASE_PATH_SMS + "/" + id);
                     break;
                 case CALLLOGS_ID:
-//                id = sqlDB.insert("mCallLogs", null, values);
+                    id = dbOperations.Insert_CALLLOGS(values);
                     returnUri = Uri.parse(BASE_PATH_CALL_LOGS + "/" + id);
                     break;
                 case CONTACT_ID:
@@ -123,9 +123,10 @@ public class ServiceProvider extends ContentProvider {
 
         switch (match) {
             case SMS_ID:
-                cursor = dbOperations.Query_Sms(projection, selection, selectionArgs, sortOrder);
+                cursor = dbOperations.Query_Sms_CALLLogs(DBQuery.DbTables.TABLE_SMS, projection, selection, selectionArgs, sortOrder);
                 break;
             case CALLLOGS_ID:
+                cursor = dbOperations.Query_Sms_CALLLogs(DBQuery.DbTables.TABLE_CALL_LOGS, projection, selection, selectionArgs, sortOrder);
                 break;
             case CONTACT_ID:
                 break;

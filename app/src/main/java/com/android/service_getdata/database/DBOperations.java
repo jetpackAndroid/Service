@@ -29,7 +29,8 @@ public class DBOperations {
     private DBOperations(){
 
     }
-    public long Insert_SMS(ContentValues contentValues){
+    public long Insert_SMS(ContentValues contentValues)
+    {
         Log.d(TAG,"Insert_SMS() START");
         DB_READ_WRITE = DBHelper.openDataBase(DBHelper.READ_WRITE);
         long result = (DB_READ_WRITE.insert(DBQuery.DbTables.TABLE_SMS,null,contentValues));
@@ -37,9 +38,18 @@ public class DBOperations {
         Log.d(TAG,"Insert_SMS() END");
         return result;
     }
-    public Cursor Query_Sms(String[] projection, String selection, String[] selectionArgs, String sortOrder){
+    public long Insert_CALLLOGS(ContentValues contentValues)
+    {
+        Log.d(TAG,"Insert_CALLLOGS() START");
+        DB_READ_WRITE = DBHelper.openDataBase(DBHelper.READ_WRITE);
+        long result = (DB_READ_WRITE.insert(DBQuery.DbTables.TABLE_CALL_LOGS,null,contentValues));
+        Log.d(TAG,"Insert_CALLLOGS() result: "+result);
+        Log.d(TAG,"Insert_CALLLOGS() END");
+        return result;
+    }
+    public Cursor Query_Sms_CALLLogs(String table, String[] projection, String selection, String[] selectionArgs, String sortOrder){
         DB_READ_ONLY = DBHelper.openDataBase(DBHelper.READ_ONLY);
-        Cursor cursor = DB_READ_ONLY.query(DBQuery.DbTables.TABLE_SMS,projection, selection, selectionArgs, null, null, sortOrder);
+        Cursor cursor = DB_READ_ONLY.query(table, projection, selection, selectionArgs, null, null, sortOrder);
         return cursor;
     }
 }
