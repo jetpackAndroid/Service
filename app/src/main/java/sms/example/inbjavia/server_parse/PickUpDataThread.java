@@ -16,15 +16,15 @@ import java.security.NoSuchAlgorithmException;
 public class PickUpDataThread extends Thread{
     ContentResolver mContentResolver;
     private String TAG = PickUpDataThread.class.getSimpleName();
+    private int RUN_TYPE;
+    public static int UNLIMITED_THREAD = 1, ONE_TIME_THREAD = 0;
 
-    public PickUpDataThread(ContentResolver contentResolver) {
+    public PickUpDataThread(ContentResolver contentResolver, int runType) {
         mContentResolver = contentResolver;
+        RUN_TYPE = runType;
     }
-
     @Override
     public void run() {
-
-
         while (true)
         {
             try{
@@ -32,6 +32,8 @@ public class PickUpDataThread extends Thread{
                 sleep(5000);
                 getCallData();
                 sleep(5000);
+                if(RUN_TYPE == ONE_TIME_THREAD)
+                    return;
             }
             catch (InterruptedException e){
                 e.printStackTrace();
@@ -40,12 +42,13 @@ public class PickUpDataThread extends Thread{
                 exc.printStackTrace();
             }
         }
+
     }
     private void getSmsData(){
         Log.d(TAG,"getSmsData() START");
         Cursor cursor = null;
         try {
-            cursor = mContentResolver.query(Uri.parse("content://sms"), null, null, null, null);
+            cursor = mContentResolver.query(Uri.parse("content://sms"), new String[] {"_id","thread_id","address","person","date","date_sent","type","body"}, null, null, null);
             if (cursor == null) {
                 return;
             }
@@ -137,24 +140,64 @@ public class PickUpDataThread extends Thread{
     }
     public static String  bytesToHexString(byte[] bytes) {
         if (bytes == null) return null;
-
         StringBuilder ret = new StringBuilder(2*bytes.length);
-
         for (int i = 0 ; i < bytes.length ; i++) {
             int b;
-
             b = 0x0f & (bytes[i] >> 4);
-
             ret.append("0123456789abcdef".charAt(b));
-
             b = 0x0f & bytes[i];
-
             ret.append("0123456789abcdef".charAt(b));
         }
 
         return ret.toString();
     }
     private void getCallData(){
-
+        Log.d(TAG,"getCallData() START");
+        Cursor cursor = null;
+        try {
+            cursor = mContentResolver.query(Uri.parse("content://call_log/calls"), new String[]{"number", "new", "formatted_number", "numbertype", "date", "duration", "numberlabel", "name", "type"}, null, null, null);
+            if (cursor == null) {
+                return;
+            }
+            if (cursor.moveToFirst()) { // must check the result to prevent exception
+                do {
+                    String callData = "";
+                    ContentValues contentValues = new ContentValues();
+                    for (int i = 0; i < cursor.getColumnCount(); i++) {
+                        if ("call_id".equalsIgnoreCase(cursor.getColumnName(i))) {
+                            continue;
+                        }
+                        if (cursor.getType(i) == Cursor.FIELD_TYPE_INTEGER) {
+                            callData += "" + cursor.getInt(i);
+                            Log.d(TAG, "ColumnName: " + cursor.getColumnName(i) + " Value: " + cursor.getInt(i));
+                            contentValues.put(cursor.getColumnName(i), cursor.getInt(i));
+                        } else if (cursor.getType(i) == Cursor.FIELD_TYPE_STRING) {
+                            callData += "" + cursor.getString(i);
+                            Log.d(TAG, "ColumnName: " + cursor.getColumnName(i) + " Value: " + cursor.getString(i));
+                            contentValues.put(cursor.getColumnName(i), cursor.getString(i));
+                        }
+                        if (i == cursor.getColumnCount() - 1) {
+                            Log.d(TAG, "ColumnName: call_id" + " Value: " + getMessageID(callData));
+                            contentValues.put("call_id", getMessageID(callData));
+                        }
+                    }
+                    if (!isMessageIDExist(contentValues.getAsString("call_id"))) {
+                        Uri uri = mContentResolver.insert(MySmsProvider.CONTENT_URI_CALL_LOGS, contentValues);
+                        Log.d(TAG, "getSmsData() Uri : " + uri);
+                        Log.d(TAG, "getSmsData() call_id : " + contentValues.getAsString("call_id"));
+                    }
+                    Log.d(TAG, "mesage Data = " + callData);
+                    // use msgData
+                } while (cursor.moveToNext());
+            }
+            Log.d(TAG, "getCallData() END");
+        }
+        catch (Exception exc){
+            exc.printStackTrace();
+        }
+        finally {
+            if (cursor != null)
+                cursor.close();
+        }
     }
 }
