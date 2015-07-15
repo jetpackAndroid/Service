@@ -11,8 +11,12 @@ import com.android.service_getdata.Service.MyService;
 public class MainActivity extends ActionBarActivity {
 
     @Override
+<<<<<<< HEAD
     protected void onCreate(Bundle savedInstanceState)
     {
+=======
+    protected void onCreate(Bundle savedInstanceState) {
+>>>>>>> ec52dde34d5ca4957bd29e0dcc8021491a4a7cc8
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Intent intent = new Intent(this,MyService.class);

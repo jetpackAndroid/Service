@@ -4,8 +4,15 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+<<<<<<< HEAD
 import android.text.TextUtils;
 
+=======
+import android.net.Uri;
+import android.text.TextUtils;
+
+import com.android.service_getdata.database.DBQuery;
+>>>>>>> ec52dde34d5ca4957bd29e0dcc8021491a4a7cc8
 import com.android.service_getdata.provider.ServiceProvider;
 
 import java.math.BigInteger;
@@ -65,6 +72,7 @@ public class HelperClass {
         }
         return null;
     }
+<<<<<<< HEAD
     public static boolean isMessageIDExist(String messageId, ContentResolver mContentResolver){
         Cursor cursor = null;
         try {
@@ -90,6 +98,25 @@ public class HelperClass {
             if (cursor != null)
                 cursor.close();
         }
+=======
+    public static boolean isMessageCallIDExist(Uri tableUri, String messageId, String columnName, ContentResolver mContentResolver){
+        Cursor cursor = null;
+        cursor = mContentResolver.query(tableUri, new String[]{"*"}, columnName+"=?", new String[]{messageId}, null);
+        if (cursor == null) {
+            return false;
+        }
+        if (cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndex(columnName);
+            String m_Id = cursor.getString(columnIndex);
+            if (m_Id == null) {
+                cursor.close();
+                return false;
+            }
+            cursor.close();
+            return true;
+        }
+        cursor.close();
+>>>>>>> ec52dde34d5ca4957bd29e0dcc8021491a4a7cc8
         return false;
     }
     public static class NotAllowedException extends Exception{
