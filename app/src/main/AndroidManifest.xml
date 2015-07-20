@@ -26,15 +26,27 @@
             </intent-filter>
         </activity>
 
-        <receiver
-            android:name=".AllReceiver"
-            android:enabled="true"
-            android:exported="true" >
+        <receiver android:name=".receivers.BootReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".receivers.ConnectivityChanges">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".receivers.IncomingCall">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE"></action>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".receivers.IncomingSms">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED"></action>
             </intent-filter>
         </receiver>
 
