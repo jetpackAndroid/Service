@@ -4,11 +4,12 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.android.service_getdata.database.DBQuery;
-import com.android.service_getdata.provider.ServiceProvider;
+import com.android.service_getdata.application.ServiceApp;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -86,6 +87,14 @@ public class HelperClass {
         cursor.close();
         return false;
     }
+
+    public static boolean isInternetAvailable(){
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) ServiceApp.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     public static class NotAllowedException extends Exception{
         private String message = null;
 

@@ -4,14 +4,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Binder;
 import android.util.Log;
 
 import com.android.service_getdata.Helper.HelperClass;
-import com.android.service_getdata.provider.ServiceProvider;
-
-import java.sql.SQLException;
-import java.util.Objects;
+import com.android.service_getdata.provider.BasicServiceProvider;
+import com.android.service_getdata.provider.SyncServiceProvider;
 
 /**
  * Created by inrsharm04 on 3/3/2015.
@@ -31,7 +28,8 @@ public class DBHelper extends SQLiteOpenHelper{
 
     public static DBHelper getInstance(Context context, Object callerObject) throws HelperClass.NotAllowedException{
 
-        if (!ServiceProvider.class.isInstance(callerObject))
+        if (!BasicServiceProvider.class.isInstance(callerObject) &&
+                !SyncServiceProvider.class.isInstance(callerObject))
             throw new HelperClass.NotAllowedException(callerObject.getClass()+" is not allowed to create instance of this class");
 
         Log.d(TAG,"getInstance");
@@ -58,6 +56,9 @@ public class DBHelper extends SQLiteOpenHelper{
             db.execSQL(DBQuery.DATABASE_CREATE_TABLE_CONTACT);
             db.execSQL(DBQuery.DATABASE_CREATE_TABLE_CallLOGS);
             db.execSQL(DBQuery.DATABASE_CREATE_TABLE_SMS);
+            db.execSQL(DBQuery.DATABASE_CREATE_TABLE_SYNC_CALLLOGS);
+            db.execSQL(DBQuery.DATABASE_CREATE_TABLE_SYNC_SMS);
+            db.execSQL(DBQuery.DATABASE_CREATE_TABLE_SYNC_CONTACT);
             db.setTransactionSuccessful();
             Log.d(TAG,"onCreate : Transaction END");
         }

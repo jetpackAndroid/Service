@@ -10,6 +10,9 @@ public class DBQuery {
         //Database tables
         String TABLE_CALL_LOGS = "CallLogs";
         String TABLE_SMS = "Sms";
+        String TABLE_SYNC_SMS = "SyncSms";
+        String TABLE_SYNC_CALLLOGS = "SyncCallLogs";
+        String TABLE_SYNC_CONTACT = "SyncContact";
         String TABLE_CONTACT = "Contact";
     }
 
@@ -24,6 +27,7 @@ public class DBQuery {
         String COLUMN_CALL_LOGS_TYPE = "type";
         String COLUMN_CALL_LOGS_NEW = "new";
         String COLUMN_CALL_LOGS_NAME = "name";
+        String COLUMN_CALL_LOGS_STATUS = "status";
         String COLUMN_CALL_LOGS_NUMBER_TYPE = "numbertype";
         String COLUMN_CALL_LOGS_NUMBER_LABEL = "numberlabel";
         String COLUMN_CALL_LOGS_NUMBER_FORMATED_NUMBER = "formatted_number";
@@ -34,30 +38,35 @@ public class DBQuery {
         String COLUMN_SMS_THREAD_ID = "thread_id";
         String COLUMN_SMS_ADDRESS = "address";
         String COLUMN_SMS_PERSON = "person";
+        String COLUMN_SMS_STATUS = "status";
         String COLUMN_SMS_DATE = "date";
         String COLUMN_SMS_DATE_SENT = "date_sent";
         String COLUMN_SMS_TYPE = "type";
         String COLUMN_SMS_BODY = "body";
 
         //TABLE_CONTACT Fields
-        String COLUMN_CONTACT_ID = "CONTACT_ID";
+        String COLUMN_CONTACT_ID = "_ID";
+        String COLUMN_CONTACT_CONTACT_ID = "CONTACT_ID";
         String COLUMN_CONTACT_NAME = "CONTACT_NAME";
         String COLUMN_CONTACT_MOBILE = "CONTACT_MOBILE";
         String COLUMN_CONTACT_ADDRESS = "CONTACT_ADDRESS";
         String COLUMN_CONTACT_EMAIL = "CONTACT_EMAIL";
         String COLUMN_CONTACT_COMPANY = "CONTACT_COMPANY";
+        String COLUMN_CALL_CONTACT_STATUS = "status";
     }
 
 
     //create table CONTACT
     protected static final String DATABASE_CREATE_TABLE_CONTACT = "CREATE TABLE "
             + DbTables.TABLE_CONTACT + "(" + DbFields.COLUMN_CONTACT_ID
-            + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DbFields.COLUMN_CONTACT_NAME
+            + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DbFields.COLUMN_CONTACT_CONTACT_ID
+            + " INTEGER NOT NULL UNIQUE, " + DbFields.COLUMN_CONTACT_NAME
             + " TEXT NOT NULL, " + DbFields.COLUMN_CONTACT_MOBILE
             + " TEXT NOT NULL, " + DbFields.COLUMN_CONTACT_EMAIL
             + " TEXT, " + DbFields.COLUMN_CONTACT_ADDRESS
             + " TEXT, " + DbFields.COLUMN_CONTACT_COMPANY
-            + " TEXT);";
+            + " TEXT, " + DbFields.COLUMN_CALL_CONTACT_STATUS
+            + " INTEGER);";
 
     //create table CallLogs
     protected static final String DATABASE_CREATE_TABLE_CallLOGS = "CREATE TABLE "
@@ -72,6 +81,7 @@ public class DBQuery {
             + " INTEGER, " + DbFields.COLUMN_CALL_LOGS_NUMBER_FORMATED_NUMBER
             + " TEXT, " + DbFields.COLUMN_CALL_LOGS_NEW
             + " INTEGER, " + DbFields.COLUMN_CALL_LOGS_TYPE
+            + " INTEGER, " + DbFields.COLUMN_CALL_LOGS_STATUS
             + " INTEGER);";
 
     //create table Sms
@@ -85,5 +95,27 @@ public class DBQuery {
             + " INTEGER, " + DbFields.COLUMN_SMS_PERSON
             + " INTEGER, " + DbFields.COLUMN_SMS_TYPE
             + " INTEGER, " + DbFields.COLUMN_SMS_THREAD_ID
+            + " INTEGER, " + DbFields.COLUMN_SMS_STATUS
+            + " INTEGER);";
+
+    //create table sync SMS Data
+    protected static final String DATABASE_CREATE_TABLE_SYNC_SMS = "CREATE TABLE "
+            + DbTables.TABLE_SYNC_SMS + "(" + DbFields.COLUMN_SMS_ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DbFields.COLUMN_SMS_MESSAGE_ID
+            + " INTEGER NOT NULL UNIQUE, " + DbFields.COLUMN_SMS_STATUS
+            + " INTEGER);";
+
+    //create table sync Call Logs Data
+    protected static final String DATABASE_CREATE_TABLE_SYNC_CALLLOGS = "CREATE TABLE "
+            + DbTables.TABLE_SYNC_CALLLOGS + "(" + DbFields.COLUMN_CALL_LOGS_ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DbFields.COLUMN_CALL_LOGS_CALL_ID
+            + " INTEGER NOT NULL UNIQUE, " + DbFields.COLUMN_CALL_LOGS_STATUS
+            + " INTEGER);";
+
+    //create table sync SMS Data
+    protected static final String DATABASE_CREATE_TABLE_SYNC_CONTACT = "CREATE TABLE "
+            + DbTables.TABLE_SYNC_CONTACT + "(" + DbFields.COLUMN_CONTACT_ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DbFields.COLUMN_CONTACT_CONTACT_ID
+            + " INTEGER NOT NULL UNIQUE, " +DbFields.COLUMN_CALL_CONTACT_STATUS
             + " INTEGER);";
 }

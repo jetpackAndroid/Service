@@ -5,10 +5,13 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
+        android:name=".application.ServiceApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -36,15 +39,29 @@
         </receiver>
 
         <service
-            android:name=".Service.MyService"
+            android:name=".Service.PickDataService"
             android:enabled="true"
             android:exported="true" >
         </service>
 
-        <provider android:name=".provider.ServiceProvider"
+        <provider
+            android:name=".provider.BasicServiceProvider"
+            android:authorities="com.android.service_getdata.provider.BasicServiceProvider"
             android:exported="true"
-            android:multiprocess="true"
-            android:authorities="com.android.service_getdata.provider.ServiceProvider"/>
+            android:multiprocess="true" />
+        <provider
+            android:name=".provider.SyncServiceProvider"
+            android:authorities="com.android.service_getdata.provider.SyncServiceProvider"
+            android:exported="true"
+            android:multiprocess="true" />
+
+        <service
+            android:name=".Service.SendDataService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
+        <receiver android:name=".receivers.BackupSchedular"></receiver>
     </application>
 
 </manifest>
